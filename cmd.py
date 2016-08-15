@@ -15,6 +15,10 @@ from piston.steem import Steem
 NAMESERVERS = ['ns1.example.com']
 SOA = 'ns1.example.com dns-admin.example.com 0'
 
+
+# e.g. in my case, .user.steem.network
+mirror_domains = []
+
 conn = sqlite3.connect('/var/spool/powerdns/steem.sqlite')
 c = conn.cursor()
 
@@ -64,6 +68,8 @@ class SteemDNS:
                 print(username + ' : ' + j)
                 if add:
                     self.store_domain(username+'.steem', obj['dns']['records'])
+                    for m in mirror_domains:
+                        self.store_domain(username + m, obj['dns']['records'])
             except:
                 pass
             return obj
