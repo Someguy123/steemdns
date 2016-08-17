@@ -47,7 +47,7 @@ class SteemDNS:
                         account = data['account']
                         self.store_domain(account+".steem", records)
                         for m in mirror_domains:
-                            self.store_domain(username + m, obj['dns']['records'])
+                            self.store_domain(account + m, records)
                 except Exception as e:
                     print('error parsing data: {}'.format(data))
                     print('exception was {}'.format(e))
