@@ -46,6 +46,8 @@ class SteemDNS:
                         records = records['dns']['records']
                         account = data['account']
                         self.store_domain(account+".steem", records)
+                        for m in mirror_domains:
+                            self.store_domain(username + m, obj['dns']['records'])
                 except Exception as e:
                     print('error parsing data: {}'.format(data))
                     print('exception was {}'.format(e))
@@ -132,7 +134,6 @@ class SteemDNS:
             c.execute("INSERT INTO records (domain_id, name, content, type, ttl, prio) values (?,?,?,?,?,?) ", (domain_id, subdomain, r[2], r[1], 600, prio));
             print('Added record {} with content {} for domain {}'.format(r[1], r[2], r[0]))
             conn.commit()
-
 if __name__ == "__main__":
     s = SteemDNS()
     helptext = """
