@@ -91,7 +91,7 @@ class SteemDNS:
 
         sel = c.execute('SELECT id FROM domains WHERE name = ?', (domain,))
         domain_id = c.fetchone()
-        print('Locating domain...')
+        print('Locating domain... ' + domain)
         # Domain isn't found. Create the record
         if domain_id is None:
             print('Domain not found. Creating')
@@ -109,7 +109,6 @@ class SteemDNS:
             return
 
         c.execute("DELETE FROM records WHERE domain_id = ? AND type IN ('A', 'CNAME', 'TXT', 'SPF', 'MX')", (domain_id,))
-        print('Deleted records')
         for r in records:
             if type(r) is not list:
                 print('[ERR] not a list')
@@ -129,7 +128,6 @@ class SteemDNS:
             subdomain = domain
             if r[0] != '@' and r[0] != '':
                 subdomain = r[0] + "." + domain
-            print(type(domain_id))
             domain_id = int(domain_id)
             c.execute("INSERT INTO records (domain_id, name, content, type, ttl, prio) values (?,?,?,?,?,?) ", (domain_id, subdomain, r[2], r[1], 600, prio));
             print('Added record {} with content {} for domain {}'.format(r[1], r[2], r[0]))
